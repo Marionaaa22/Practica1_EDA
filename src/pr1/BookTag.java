@@ -16,6 +16,7 @@ public class BookTag implements Comparable<BookTag>{
 	
 	@Override
 	public int compareTo(BookTag other) {
+
 		
 		/* Booktags are sorted as follows:
 		 	- first go booktags with lowest left attribute. If left attributes cannot discriminate...
