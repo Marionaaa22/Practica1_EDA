@@ -1,22 +1,122 @@
 package pr1;
 
+import pr1.exceptions.UnexpectedDuplicateException;
+
 import java.util.*;
 
-import pr1.exceptions.UnexpectedDuplicateException;
-import pr1.exceptions.UnknownBookException;
 
-
-public class MyCozyLibrary //TODO: Complete header
+public class MyCozyLibrary implements SmallLibrary
 {
-
 	/* You must use a List. Never downcast the list when working with attribute allBooks*/
 	private List<Book> allBooks;
-	
+
 	public MyCozyLibrary () {
-		/* COMPLETE */
+
+		allBooks = new ArrayList<>();
+	}
+
+	@Override
+	public int getNumBooks() {
+
+		int numBooks = allBooks.size();
+
+		return numBooks;
+	}
+
+	@Override
+	public int totalNumCopies() {
+		int copies = 0;
+		for (Book book : allBooks) {
+			copies += book.getNumCopies();
+		}
+		return copies;
+	}
+
+	@Override
+	public void addBook(Book book) {
+		if (book == null) {
+			throw new NullPointerException("El llibre no pot ser nul");
+		}
+
+		if (allBooks.contains(book)) {
+			throw new UnexpectedDuplicateException("No es pot afegir");
+		}
+		else {
+			allBooks.add(book);
+		}
 
 	}
-	
+
+	@Override
+	public void removeBook(Book book) {
+		if (book == null) {
+			throw new NullPointerException("El llibre no pot ser nul");
+		}
+
+		if (!allBooks.contains(book)) {
+			throw new pr1.exceptions.UnknownBookException("No es pot eliminar");
+		}
+
+		allBooks.remove(book);
+	}
+
+	@Override
+	public Book getBook(BookTag tag) {
+		Book llibreTrobat = null;
+		for (Book book : allBooks){
+			if (book.getTag().equals(tag)){
+				llibreTrobat = book;
+			}
+		}
+		return llibreTrobat;
+	}
+
+	@Override
+	public List<Book> booksFromYear(int year) {
+
+		List<Book> resultat = new ArrayList<>();
+
+		for(Book b: allBooks){
+			if(b.getYear() == year){
+				resultat.add(b);
+			}
+		}
+
+		resultat.sort(new ByYearComparator());
+		return resultat;
+	}
+
+	@Override
+	public Book[] containsWord(String word) {
+		List<Book> resultat = new ArrayList<>();
+
+		for(Book b: allBooks){
+			if(b.getTitle().contains(word.toUpperCase())){
+				resultat.add(b);
+			}
+		}
+
+		Collections.sort(resultat);
+		return resultat.toArray(new Book[0]);
+	}
+
+	@Override
+	public int modifyBookCopies(BookTag tag, int num) {
+		Book b = getBook(tag);
+
+		if (b == null){
+			throw new pr1.exceptions.UnknownBookException("El llibre no pot ser nul");
+		}
+
+		int copies = b.modifyNumCopies(num);
+
+		if(copies == 0){
+			allBooks.remove(b);
+		}
+
+		return copies;
+	}
+
 	/* COMPLETE */
 
 	

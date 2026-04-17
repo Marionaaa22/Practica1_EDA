@@ -33,11 +33,7 @@ public class Book implements Comparable<Book> {
 	@Override
 	public int compareTo(Book other) {
 		
-		/* Books are sorted by booktag. Books with lowest booktags go first */
-		
-		/* COMPLETE */
-
-		return -1; //TODO: Change this!
+		return tag.compareTo(other.tag);
 	}
 	
 	@Override
