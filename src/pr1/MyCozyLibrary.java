@@ -1,7 +1,7 @@
 package pr1;
 
 import pr1.exceptions.UnexpectedDuplicateException;
-
+import java.util.Comparator;
 import java.util.*;
 
 
@@ -126,7 +126,7 @@ public class MyCozyLibrary implements SmallLibrary
 		@Override
 		public int compare(Book book1, Book book2) {
 			
-			/* COMPLETE */
+
 
 			return -1; //TODO: Change this!
 		}
