@@ -7,8 +7,6 @@ import java.util.Random;
 
 public class AuxiliaryMethods {
 
-
-
     public static void shuffle (Object t[]) {
         Random r = new Random();
         Object pivot;

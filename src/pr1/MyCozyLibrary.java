@@ -18,9 +18,7 @@ public class MyCozyLibrary implements SmallLibrary
 	@Override
 	public int getNumBooks() {
 
-		int numBooks = allBooks.size();
-
-		return numBooks;
+		return allBooks.size();
 	}
 
 	@Override
@@ -62,13 +60,12 @@ public class MyCozyLibrary implements SmallLibrary
 
 	@Override
 	public Book getBook(BookTag tag) {
-		Book llibreTrobat = null;
 		for (Book book : allBooks){
 			if (book.getTag().equals(tag)){
-				llibreTrobat = book;
+				return book;
 			}
 		}
-		return llibreTrobat;
+		return null;
 	}
 
 	@Override
@@ -125,10 +122,7 @@ public class MyCozyLibrary implements SmallLibrary
 
 		@Override
 		public int compare(Book book1, Book book2) {
-			
-
-
-			return -1; //TODO: Change this!
+			return Integer.compare(book1.getYear(), book2.getYear() );
 		}
 		
 	}

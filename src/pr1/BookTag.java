@@ -16,18 +16,25 @@ public class BookTag implements Comparable<BookTag>{
 	
 	@Override
 	public int compareTo(BookTag other) {
-
-		
 		/* Booktags are sorted as follows:
 		 	- first go booktags with lowest left attribute. If left attributes cannot discriminate...
 		 	- ... first go booktags with the lowest mid attribute. If mid cannot discriminate...
-		 	- ... first go booktags with HIGHEST right attribute. 
+		 	- ... first go booktags with HIGHEST right attribute.
 		 */
-		
-		/* COMPLETE */
 
-		
-		return -1; //TODO: Change this!
+		int llibre = this.left.compareTo(other.left);
+		if (llibre != 0){
+			return llibre;
+		}
+
+
+		llibre = Integer.compare(this.mid, other.mid);
+
+		if(llibre != 0){
+			return llibre;
+		}
+
+		return this.right.compareTo(other.right);
 	}
 	
 	@Override
