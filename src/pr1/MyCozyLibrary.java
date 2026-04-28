@@ -1,6 +1,8 @@
 package pr1;
 
 import pr1.exceptions.UnexpectedDuplicateException;
+import pr1.exceptions.UnknownBookException;
+
 import java.util.Comparator;
 import java.util.*;
 
@@ -36,13 +38,12 @@ public class MyCozyLibrary implements SmallLibrary
 			throw new NullPointerException("El llibre no pot ser nul");
 		}
 
-		if (allBooks.contains(book)) {
-			throw new UnexpectedDuplicateException("No es pot afegir");
+		for(Book llistaBook : allBooks){
+			if(llistaBook.equals(book)) {
+				throw new UnexpectedDuplicateException("No es pot afegir");
+			}
 		}
-		else {
-			allBooks.add(book);
-		}
-
+		allBooks.add(book);
 	}
 
 	@Override
@@ -51,11 +52,15 @@ public class MyCozyLibrary implements SmallLibrary
 			throw new NullPointerException("El llibre no pot ser nul");
 		}
 
-		if (!allBooks.contains(book)) {
-			throw new pr1.exceptions.UnknownBookException("No es pot eliminar");
-		}
+		Iterator<Book> ite = allBooks.iterator();
 
-		allBooks.remove(book);
+		while(ite.hasNext()){
+			if(ite.next().equals(book)){
+				ite.remove();
+				return;
+			}
+
+		}
 	}
 
 	@Override
@@ -74,49 +79,46 @@ public class MyCozyLibrary implements SmallLibrary
 		List<Book> resultat = new ArrayList<>();
 
 		for(Book b: allBooks){
-			if(b.getYear() == year){
+			if(b.getYear() >= year){
 				resultat.add(b);
 			}
 		}
 
-		resultat.sort(new ByYearComparator());
+		Collections.sort(resultat, new ByYearComparator());
 		return resultat;
 	}
 
 	@Override
 	public Book[] containsWord(String word) {
-		List<Book> resultat = new ArrayList<>();
+		List<Book> llista = new ArrayList<Book>();
 
 		for(Book b: allBooks){
-			if(b.getTitle().contains(word.toUpperCase())){
-				resultat.add(b);
+			if(b.getTitle().contains(word)){
+				llista.add(b);
 			}
 		}
 
-		Collections.sort(resultat);
-		return resultat.toArray(new Book[0]);
+		Book [] arrayList = llista.toArray( new Book[0]);
+		Arrays.sort(arrayList);
+		return arrayList;
 	}
 
 	@Override
 	public int modifyBookCopies(BookTag tag, int num) {
-		Book b = getBook(tag);
 
-		if (b == null){
-			throw new pr1.exceptions.UnknownBookException("El llibre no pot ser nul");
+		for(Book llistaBook: allBooks){
+			if(llistaBook.getTag().equals(tag)){
+				llistaBook.modifyNumCopies(num);
+				if(llistaBook.getNumCopies() == 0){
+					removeBook(llistaBook);
+					return 0;
+				}
+				return llistaBook.getNumCopies();
+			}
 		}
-
-		int copies = b.modifyNumCopies(num);
-
-		if(copies == 0){
-			allBooks.remove(b);
-		}
-
-		return copies;
+		throw new UnknownBookException("La etiqueta especificada no te cap llibre en aquesta colecció");
 	}
 
-	/* COMPLETE */
-
-	
 	// inner comparator class.
 	private static class ByYearComparator implements Comparator<Book> {
 
