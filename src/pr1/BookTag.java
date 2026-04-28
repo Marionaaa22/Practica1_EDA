@@ -34,7 +34,7 @@ public class BookTag implements Comparable<BookTag>{
 			return llibre;
 		}
 
-		return this.right.compareTo(other.right);
+		return other.right.compareTo(this.right);
 	}
 	
 	@Override
